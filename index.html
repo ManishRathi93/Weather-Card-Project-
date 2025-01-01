@@ -74,6 +74,12 @@
         else if(data.weather[0].main === "Smoke"){
             wimg.src = "https://www.svgrepo.com/show/436890/smoke-fill.svg"
         }
+        else if(data.weather[0].main === "Haze"){
+            wimg.src = "https://www.svgrepo.com/show/507731/haze.svg"
+        }
+        else{
+            wimg.src = "https://www.svgrepo.com/show/505080/weather.svg"
+        }
         
     }
     search.addEventListener('keydown',(event)=>{
