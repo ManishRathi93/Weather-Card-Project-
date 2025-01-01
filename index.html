@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="search">
+            <input type="text" class="search-input" placeholder="Enter the City">
+            <button class="search-icon"><img width="20px" src="https://img.icons8.com/?size=100&id=132&format=png&color=000000" alt="search-icon"></button>
+        </div>
+        <div class="city">
+            <h1 class="curr-city"></h1>
+        </div>
+        <div class="weather">
+            <img src="" class="weather-img" alt="weather-img">
+        </div>
+        <div class="temp">
+            <h1 class="curr-temp"></h1>
+            <h2 class="curr-weather"></h2>
+            <div class="range">
+                <h3 class="low"></h3>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    const search = document.querySelector('.search-input');
+    const wimg = document.querySelector('.weather-img');
+    const searchbtn = document.querySelector(".search-icon")
+    const currcity = document.querySelector('.curr-city');
+
+    const apiKey = "9bb5366c343d0578bb231ceffb840d02";
+    const apiURL = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+    async function weather(city) {
+        const content = await fetch(apiURL+city+`&appid=${apiKey}`)
+        const data = await content.json();
+        console.log(data);
+
+        document.querySelector('.curr-temp').innerHTML = data.main.temp+"°";
+        document.querySelector('.curr-weather').innerHTML = data.weather[0].main;
+        document.querySelector('.low').innerHTML = data.wind.speed+"km/hr"
+
+        wimg.style.display = "block";
+        currcity.style.display = "block";
+        currcity.innerHTML = data.name;
+
+        if(data.weather[0].main === "Clear"){
+            wimg.src = "https://www.svgrepo.com/show/500706/sunny.svg";
+        }
+        else if(data.weather[0].main === "Clouds"){
+            wimg.src = "https://www.svgrepo.com/show/532037/clouds.svg"
+        }
+        else if(data.weather[0].main === "Drizzle"){
+            wimg.src = "https://www.svgrepo.com/show/85140/drizzle.svg"
+        }
+        else if(data.weather[0].main === "Humidity"){
+            wimg.src = "https://www.svgrepo.com/show/521708/humidity.svg"
+        }
+        else if(data.weather[0].main === "Mist"){
+            wimg.src = "https://www.svgrepo.com/show/108783/mist.svg"
+        }
+        else if(data.weather[0].main === "Rain"){
+            wimg.src = "https://www.svgrepo.com/show/451223/rain-thunder.svg"
+        }
+        else if(data.weather[0].main === "Snow"){
+            wimg.src = "https://www.svgrepo.com/show/485897/snow.svg"
+        }
+        else if(data.weather[0].main === "Smoke"){
+            wimg.src = "https://www.svgrepo.com/show/436890/smoke-fill.svg"
+        }
+        
+    }
+    search.addEventListener('keydown',(event)=>{
+        if(event.key === "Enter"){
+            const value = search.value;
+            weather(value);
+            search.value = "";
+        }
+    })
+    searchbtn.addEventListener('click',()=>{
+        const value  = search.value;
+        weather(value);
+        search.value = "";
+    })
+</script>
+</html>
